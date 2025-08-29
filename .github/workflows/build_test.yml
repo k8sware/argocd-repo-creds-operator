@@ -1,0 +1,39 @@
+name: Build Docker image Tag
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  build:
+    name: Build Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    permissions:
+      packages: read
+      contents: read
+      attestations: read
+    #   id-token: read
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: k8sware/argocd-repo-creds-operator
+
+      - name: Build and push Docker image
+        id: push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
