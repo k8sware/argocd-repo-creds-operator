@@ -28,9 +28,10 @@ jobs:
         with:
           images: k8sware/argocd-repo-creds-operator
 
-      - name: Build and push Docker image
-        id: push
+      - name: Build
+        id: build
         uses: docker/build-push-action@v6
+    
         with:
           context: .
           file: ./Dockerfile
