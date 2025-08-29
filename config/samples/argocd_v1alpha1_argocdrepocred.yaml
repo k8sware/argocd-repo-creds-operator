@@ -1,0 +1,25 @@
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: mysecret
+# type: Opaque
+# data:
+#   password: <Password>
+---
+apiVersion: argocd.repocreds.io/v1alpha1
+kind: ArgoCDRepoCred
+metadata:
+  labels:
+    app.kubernetes.io/name: argocd-repo-creds-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: argocdrepocred-sample
+  namespace: shivam
+spec:
+  # TODO(user): Add fields here
+  oidcType: azure
+  tenantId: fed95e69-8d73-43fe-affb-a7d85ede36fb
+  clientId: eb224998-eb67-4522-ac6c-bcc5acfbb1cb
+  clientSecretRef:
+    name: my-secret
+    key: clientSecret
+  repoURL: https://dev.azure.com/nn-infra/andromeda-gitops-stg/_git/shivam
